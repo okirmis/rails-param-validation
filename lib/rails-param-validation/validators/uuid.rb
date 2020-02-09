@@ -10,7 +10,8 @@ module RailsParamValidation
     def matches?(path, data)
       if data.is_a?(String) || data.is_a?(Symbol)
         data = data.to_s
-        if data.match? REGEX
+        match = data.match REGEX
+        if match
           return MatchResult.new data
         else
           return MatchResult.new nil, path, "String does not match a uuid v4 scheme"

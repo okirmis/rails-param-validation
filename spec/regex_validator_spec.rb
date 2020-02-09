@@ -29,6 +29,15 @@ module RailsParamValidation
       end
     end
 
+    it 'should reject non-full matches' do
+      %w(ABCX=123DE X=0B AX=12).each do |str|
+        match = @validator.matches?([], str)
+
+        expect(match.matches?).to eq(false)
+        expect(match.value).to eq(nil)
+      end
+    end
+
     it 'should not accept strings no following the correct format' do
       match = @validator.matches?([], "y=12")
 
