@@ -1,4 +1,24 @@
+test:2.3:
+  image: ruby:2.3
+  script:
+    - bundle install && rake spec
+
+test:2.4:
+  image: ruby:2.4
+  script:
+    - bundle install && rake spec
+
+test:2.5:
+  image: ruby:2.5
+  script:
+    - bundle install && rake spec
+
 test:2.6:
   image: ruby:2.6
+  script:
+    - bundle install && rake spec
+
+test:2.7:
+  image: ruby:2.7
   script:
     - bundle install && rake spec
