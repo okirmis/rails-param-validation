@@ -1,22 +1,22 @@
 require_relative 'lib/rails-param-validation/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "rails-param-validator"
+  spec.name          = "rails-param-validation"
   spec.version       = RailsParamValidation::VERSION
   spec.authors       = ["Oskar Kirmis"]
   spec.email         = ["oskar.kirmis@posteo.de"]
 
   spec.summary       = "Automatically validate rails parameter types"
   spec.description   = "Automatically validate rails parameter types"
-  spec.homepage      = "https://git.iftrue.de/okirmis/rails-param-validator"
+  spec.homepage      = "https://git.iftrue.de/okirmis/rails-param-validation"
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
 
   spec.metadata["allowed_push_host"] = "https://rubygems.org"
 
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "https://git.iftrue.de/okirmis/rails-param-validator"
-  spec.metadata["changelog_uri"] = "https://git.iftrue.de/okirmis/rails-param-validator"
+  spec.metadata["source_code_uri"] = "https://git.iftrue.de/okirmis/rails-param-validation"
+  spec.metadata["changelog_uri"] = "https://git.iftrue.de/okirmis/rails-param-validation"
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
