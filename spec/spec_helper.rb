@@ -1,7 +1,14 @@
 require "simplecov"
+
+PROJECT_ROOT = File.absolute_path(File.dirname(__FILE__ ) + "/..")
+LIB_ROOT = File.absolute_path(PROJECT_ROOT + "/lib")
+
+SimpleCov.root(PROJECT_ROOT)
 SimpleCov.start do
   filters.clear
-  add_filter { |src| src.filename.match?(/spec\/.*_spec.rb/) }
+  add_filter do |src|
+    !src.filename.start_with?(LIB_ROOT)
+  end
 end
 
 require "bundler/setup"

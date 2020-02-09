@@ -1,0 +1,4 @@
+test:2.6:
+  image: ruby:2.6
+  script:
+    - bundle install && rake spec
