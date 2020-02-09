@@ -1,15 +1,18 @@
-# Rails::Param::Validator
+# RailsParamValidation
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/rails/param/validator`. To experiment with that code, run `bin/console` for an interactive prompt.
+[![pipeline status](https://git.iftrue.de/okirmis/rails-param-validation/badges/master/pipeline.svg)](https://git.iftrue.de/okirmis/rails-param-validation/commits/master)
+[![coverage report](https://git.iftrue.de/okirmis/rails-param-validation/badges/master/coverage.svg)](https://git.iftrue.de/okirmis/rails-param-validation/commits/master)
 
-TODO: Delete this and the text above, and describe your gem
+
+
+This gem provides parameter validation for Rails.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'rails-param-validator'
+gem 'rails-param-validation'
 ```
 
 And then execute:
