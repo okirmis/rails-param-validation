@@ -1,5 +1,6 @@
 require_relative './validation_extension'
 require_relative './annotation_extension'
+require_relative './param_validation_failed_error'
 
 module RailsParamValidation
   class Railtie < Rails::Railtie

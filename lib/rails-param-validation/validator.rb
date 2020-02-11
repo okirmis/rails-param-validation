@@ -26,6 +26,10 @@ module RailsParamValidation
 
       self
     end
+
+    def error_messages
+      @errors.map { |e| "#{e[:path].join('/')}: #{e[:message]}" }
+    end
   end
 
   class Validator

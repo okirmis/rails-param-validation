@@ -4,9 +4,7 @@ module RailsParamValidation
   class ExampleWithoutMethodAdded
     include AnnotationExtension
 
-    definition do
-      param :names, ArrayType(String)
-    end
+    param :names, ArrayType(String)
     def sample_method
     end
   end
@@ -22,9 +20,7 @@ module RailsParamValidation
 
     include AnnotationExtension
 
-    definition do
-      param :names, ArrayType(String)
-    end
+    param :names, ArrayType(String)
     def sample_method
     end
   end

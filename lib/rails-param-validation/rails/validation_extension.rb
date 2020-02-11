@@ -18,11 +18,10 @@ module RailsParamValidation
         end
 
         # Convert ActionController::Parameters to a normal hash
-        parameters[param.to_s] = to_hash_type value
+        parameters[param.to_s] = _to_hash_type value
       end
 
       validator = RailsParamValidation::ValidatorFactory.create definition.to_schema
-
       result = validator.matches?([], parameters)
 
       if result.matches?
@@ -30,10 +29,7 @@ module RailsParamValidation
         @validated_parameters = result.value
       else
         # Render an appropriate error message
-        render json: {
-            status: :fail,
-            errors: result.errors.map { |e| "#{e[:path].join('/')}: #{e[:message]}" }
-        }, status: 400
+        _render_invalid_param_response result
       end
     end
 
@@ -41,16 +37,26 @@ module RailsParamValidation
       @validated_parameters || super
     end
 
-    # Convert params to "normal" types
-    def to_hash_type(params)
-      case params.class
-      when Array
-        params.map(&method(:to_hash_type))
-      when ActionController::Parameters
-        params.keys.map { |k| [k, to_hash_type(params[k])] }.to_h
-      else
-        params
+    def _render_invalid_param_response(result)
+      # Depending on the accept header, choose the way to answer
+      respond_to do |format|
+        format.html do
+          # Raise an exception which can be handled using rescue_from
+          raise ParamValidationFailedError.new(result)
+        end
+        format.json do
+          # Render a bad request result describing the errors
+          render json: { status: :fail, errors: result.error_messages }, status: :bad_request
+        end
       end
+    end
+
+    # Convert params to "normal" types
+    def _to_hash_type(params)
+      return params.map(&method(:_to_hash_type)) if params.is_a?(Array)
+      return params.keys.map { |k| [k, _to_hash_type(params[k])] }.to_h if params.is_a?(ActionController::Parameters)
+
+      params
     end
   end
 end

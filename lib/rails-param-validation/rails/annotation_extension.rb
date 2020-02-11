@@ -19,6 +19,9 @@ module RailsParamValidation
         if @param_definition
           AnnotationManager.instance.annotate! self, name, :param_definition, @param_definition
           @param_definition = nil
+
+          # Parameter wrapping needs to be disabled
+          wrap_parameters false
         end
 
         # If there already was an existing method_added implementation, call it
@@ -29,24 +32,10 @@ module RailsParamValidation
     module ClassMethods
       # @param [Symbol] name Name of the parameter as it is accessible by params[<name>]
       # @param schema Definition of the schema (according to the available validators)
-      # @param default Default value that is used if the parameter is not set
       # @param [String] description Description of the param, just for documentation
-      def param(name, schema, default = nil, description = nil)
-        unless @param_definition.is_a? ActionDefinition
-          raise "param annotation can be used only inside a definition block"
-        end
-
-        @param_definition.add_param name, schema, default, description
-      end
-
-      # Begin an annotation block
-      def definition
-        @param_definition = ActionDefinition.new
-        yield
-      rescue Exception => exception
-        puts exception.message
-        puts exception.backtrace.join("\n")
-        raise exception
+      def param(name, schema, description = nil)
+        @param_definition ||= ActionDefinition.new
+        @param_definition.add_param name, schema, description
       end
     end
   end

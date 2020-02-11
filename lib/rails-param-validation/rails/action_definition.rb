@@ -7,10 +7,9 @@ module RailsParamValidation
       @params = {}
     end
 
-    def add_param(name, schema, default, description)
+    def add_param(name, schema, description)
       @params[name] = {
           schema: schema,
-          default: default,
           description: description
       }
     end
