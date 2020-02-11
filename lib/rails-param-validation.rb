@@ -13,8 +13,12 @@ require_relative './rails-param-validation/validators/regex'
 require_relative './rails-param-validation/validators/constant'
 require_relative './rails-param-validation/validators/array'
 require_relative './rails-param-validation/validators/object'
+require_relative './rails-param-validation/validators/optional'
 require_relative './rails-param-validation/validators/hash'
 require_relative './rails-param-validation/validators/alternatives'
+
+require_relative './rails-param-validation/rails/annotation_extension' unless defined?(Rails)
+require_relative './rails-param-validation/rails/rails' if defined?(Rails)
 
 module RailsParamValidation
   ValidatorFactory.register IntegerValidatorFactory.new
@@ -23,6 +27,7 @@ module RailsParamValidation
   ValidatorFactory.register StringValidatorFactory.new
   ValidatorFactory.register UuidValidatorFactory.new
   ValidatorFactory.register RegexValidatorFactory.new
+  ValidatorFactory.register OptionalValidatorFactory.new
   ValidatorFactory.register ObjectValidatorFactory.new
   ValidatorFactory.register ArrayValidatorFactory.new
   ValidatorFactory.register AlternativesValidatorFactory.new
