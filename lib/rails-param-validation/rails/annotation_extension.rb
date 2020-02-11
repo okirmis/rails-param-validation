@@ -21,7 +21,7 @@ module RailsParamValidation
           @param_definition = nil
 
           # Parameter wrapping needs to be disabled
-          wrap_parameters false
+          wrap_parameters false if respond_to? :wrap_parameters
         end
 
         # If there already was an existing method_added implementation, call it
