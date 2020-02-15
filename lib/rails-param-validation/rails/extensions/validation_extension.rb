@@ -21,7 +21,10 @@ module RailsParamValidation
         parameters[param.to_s] = _to_hash_type value
       end
 
-      validator = RailsParamValidation::ValidatorFactory.create definition.to_schema
+      action = params['action']
+      controller = params['controller']
+
+      validator = _validator_from_schema controller, action, definition.to_schema
       result = validator.matches?([], parameters)
 
       if result.matches?
@@ -41,14 +44,31 @@ module RailsParamValidation
       # Depending on the accept header, choose the way to answer
       respond_to do |format|
         format.html do
-          # Raise an exception which can be handled using rescue_from
-          raise ParamValidationFailedError.new(result)
+          if RailsParamValidation.config.use_default_html_response
+            _create_html_error result
+          else
+            raise ParamValidationFailedError.new(result)
+          end
         end
         format.json do
-          # Render a bad request result describing the errors
-          render json: { status: :fail, errors: result.error_messages }, status: :bad_request
+          if RailsParamValidation.config.use_default_json_response
+            _create_json_error result
+          else
+            raise ParamValidationFailedError.new(result)
+          end
         end
       end
+    end
+
+    # Create an empty object as JSON response
+    def _create_json_error(result)
+      render json: { status: :fail, errors: result.error_messages }, status: :bad_request
+    end
+
+    # Create an empty html error page
+    def _create_html_error(result)
+      @@_param_html_error_template ||= File.read(File.dirname(__FILE__) + '/error.template.html.erb')
+      render html: ERB.new(@@_param_html_error_template).result(binding).html_safe, status: :bad_request
     end
 
     # Convert params to "normal" types
@@ -57,6 +77,19 @@ module RailsParamValidation
       return params.keys.map { |k| [k, _to_hash_type(params[k])] }.to_h if params.is_a?(ActionController::Parameters)
 
       params
+    end
+
+    # @return [Validator]
+    def _validator_from_schema(controller, method, schema)
+      unless RailsParamValidation.config.use_validator_caching
+        return RailsParamValidation::ValidatorFactory.create schema
+      end
+
+      # Setup static key if it doesn't already exist
+      @@cache ||= {}
+
+      # Create and/or return validator
+      @@cache["#{controller}##{method}"] ||= RailsParamValidation::ValidatorFactory.create schema
     end
   end
 end

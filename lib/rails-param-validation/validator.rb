@@ -28,7 +28,7 @@ module RailsParamValidation
     end
 
     def error_messages
-      @errors.map { |e| "#{e[:path].join('/')}: #{e[:message]}" }
+      @errors.map { |e| { path: e[:path].join('/'), message: e[:message] } }
     end
   end
 

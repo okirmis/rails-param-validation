@@ -17,7 +17,7 @@ require_relative './rails-param-validation/validators/optional'
 require_relative './rails-param-validation/validators/hash'
 require_relative './rails-param-validation/validators/alternatives'
 
-require_relative './rails-param-validation/rails/annotation_extension' unless defined?(Rails)
+require_relative './rails-param-validation/rails/extensions/annotation_extension' unless defined?(Rails)
 require_relative './rails-param-validation/rails/rails' if defined?(Rails)
 
 module RailsParamValidation

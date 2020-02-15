@@ -1,5 +1,5 @@
-require_relative './action_definition'
-require_relative './annotation_manager'
+require_relative './../action_definition'
+require_relative './../annotation_manager'
 
 module RailsParamValidation
   module AnnotationExtension
