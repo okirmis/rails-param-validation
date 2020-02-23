@@ -7,8 +7,17 @@ module RailsParamValidation
     # The before_action function called which does the actual work
     def auto_validate_params!
       # @type [ActionDefinition] definition
-      definition = RailsParamValidation::AnnotationManager.instance.annotation self.class.name, action_name.to_sym, :param_definition
-      return if definition.nil?
+      definition = RailsParamValidation::AnnotationManager.instance.method_annotation self.class.name, action_name.to_sym, :param_definition
+
+      if definition.nil?
+        if RailsParamValidation.config.raise_on_missing_annotation
+          raise RailsParamValidation::MissingParameterAnnotation.new
+        else
+          return
+        end
+      end
+
+      return unless definition.param_validation?
 
       parameters = {}
       params.each do |param, value|

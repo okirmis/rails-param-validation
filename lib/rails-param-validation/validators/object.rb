@@ -35,6 +35,19 @@ module RailsParamValidation
 
       result.matches? ? MatchResult.new(value) : result
     end
+
+    def to_openapi
+      openapi = { type: :object, properties: {} }
+      required = []
+      schema.each do |key, _|
+        validator = @inner_validators[key]
+        openapi[:properties][key] = validator.to_openapi
+        required.push key unless validator.is_a? OptionalValidator
+      end
+
+      openapi[:required] = required if required.any?
+      openapi
+    end
   end
 
   class ObjectValidatorFactory < ValidatorFactory

@@ -23,6 +23,10 @@ class AlternativesValidator < Validator
 
       result
     end
+
+    def to_openapi
+      { oneOf: @inner_validators.map(&:to_openapi) }
+    end
   end
 
   class AlternativesValidatorFactory < ValidatorFactory

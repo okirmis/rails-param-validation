@@ -28,12 +28,12 @@ module RailsParamValidation
   RSpec.describe AnnotationExtension do
 
     it "should store param definition annotations" do
-      annotation = AnnotationManager.instance.annotation ExampleWithoutMethodAdded.name, :sample_method, :param_definition
+      annotation = AnnotationManager.instance.method_annotation ExampleWithoutMethodAdded.name, :sample_method, :param_definition
       expect(annotation).to be_a(ActionDefinition)
     end
 
     it "should call original method_added implementations" do
-      annotation = AnnotationManager.instance.annotation ExampleWithMethodAdded.name, :sample_method, :param_definition
+      annotation = AnnotationManager.instance.method_annotation ExampleWithMethodAdded.name, :sample_method, :param_definition
       expect(annotation).to be_a(ActionDefinition)
 
       expect(ExampleWithMethodAdded.original_method_added_calls).to be_a Array

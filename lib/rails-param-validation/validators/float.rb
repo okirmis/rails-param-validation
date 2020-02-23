@@ -20,6 +20,10 @@ module RailsParamValidation
         return MatchResult.new(nil, path, "Expected a float")
       end
     end
+
+    def to_openapi
+      { type: :number, format: :double }
+    end
   end
 
   class FloatValidatorFactory < ValidatorFactory

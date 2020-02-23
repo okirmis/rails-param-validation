@@ -33,6 +33,10 @@ module RailsParamValidation
 
       result.matches? ? MatchResult.new(value) : result
     end
+
+    def to_openapi
+      { type: :object, additionalProperties: @value_validator.to_openapi }
+    end
   end
 
   class HashValidatorFactory < ValidatorFactory

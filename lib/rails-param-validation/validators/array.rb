@@ -30,6 +30,10 @@ module RailsParamValidation
 
       result.matches? ? MatchResult.new(value) : result
     end
+
+    def to_openapi
+      { type: :array, items: @inner_validator.to_openapi }
+    end
   end
 
   class ArrayValidatorFactory < ValidatorFactory

@@ -20,6 +20,10 @@ module RailsParamValidation
         return MatchResult.new(nil, path, "Expected an integer")
       end
     end
+
+    def to_openapi
+      { type: :integer }
+    end
   end
 
   class IntegerValidatorFactory < ValidatorFactory

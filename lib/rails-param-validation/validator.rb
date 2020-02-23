@@ -42,6 +42,10 @@ module RailsParamValidation
     # @return [MatchData]
     def matches?(path, structure)
     end
+
+    def to_openapi
+      raise NotImplementedError
+    end
   end
 
 end

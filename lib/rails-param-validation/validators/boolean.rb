@@ -19,6 +19,10 @@ module RailsParamValidation
         return MatchResult.new(nil, path, "Expected a boolean (true, false)")
       end
     end
+
+    def to_openapi
+      { type: :boolean }
+    end
   end
 
   class BooleanValidatorFactory < ValidatorFactory

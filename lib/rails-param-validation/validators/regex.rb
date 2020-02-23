@@ -18,6 +18,10 @@ module RailsParamValidation
         MatchResult.new nil, path, "Expected a string matching the given pattern"
       end
     end
+
+    def to_openapi
+      { type: :string, pattern: self.schema.source }
+    end
   end
 
   class RegexValidatorFactory < ValidatorFactory

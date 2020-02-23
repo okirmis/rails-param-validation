@@ -15,6 +15,16 @@ module RailsParamValidation
         @inner_validator.matches? path, data
       end
     end
+
+    def to_openapi
+      child = @inner_validator.to_openapi
+      child[:nullable] = true
+      if child.key? :enum
+        child[:enum].push nil
+      end
+
+      child
+    end
   end
 
   class OptionalValidatorFactory < ValidatorFactory

@@ -20,6 +20,10 @@ module RailsParamValidation
         MatchResult.new nil, path, "Expected a uuid (v4)"
       end
     end
+
+    def to_openapi
+      { type: :string, format: :uuid }
+    end
   end
 
   class UuidValidatorFactory < ValidatorFactory

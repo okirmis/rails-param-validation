@@ -34,6 +34,37 @@ class OptionalT < AnnotationT
     @default = default
   end
 end
+
+class CustomT < AnnotationT
+  attr_reader :type
+
+  def initialize(type)
+    @type = type
+  end
+
+  def schema
+    CustomT.registry[@type]
+  end
+
+  def self.register(type, schema)
+    registry[type] = schema
+  end
+
+  def self.registered(type)
+    raise TypeNotFound.new(type) unless registry.key? type
+    registry[type]
+  end
+
+  def self.types
+    registry.keys
+  end
+
+  private
+
+  def self.registry
+    @@types ||= {}
+  end
+end
 end
 
 module Types
@@ -47,6 +78,10 @@ module Types
 
   def Optional(inner_type, default)
     AnnotationTypes::OptionalT.new(inner_type, default)
+  end
+
+  def Type(type)
+    AnnotationTypes::CustomT.new(type)
   end
 end
 
