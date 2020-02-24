@@ -33,7 +33,9 @@ module RailsParamValidation
 
         parameters = operation.params.filter { |_, v| v[:type] != :body }.map do |name, pd|
           param_definition = { name: name, in: pd[:type] }
-          param_definition[:description] = pd[:description] if pd[:description].present?
+          if pd[:description].present?
+            param_definition[:description] = pd[:description]
+          end
 
           validator = RailsParamValidation::ValidatorFactory.create pd[:schema]
           param_definition[:required] = true unless validator.is_a? RailsParamValidation::OptionalValidator
@@ -54,7 +56,7 @@ module RailsParamValidation
                     {
                         description: values[:description],
                         content: {
-                            'application/json': {
+                            operation.request_body_type => {
                                 schema: ValidatorFactory.create(values[:schema]).to_openapi
                             }
                         }

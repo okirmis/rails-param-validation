@@ -10,7 +10,12 @@ namespace :openapi do
       Rails.application.eager_load!
     end
 
-    openapi = RailsParamValidation::OpenApi.new('Sample', '1.0', 'http://localhost:3000/api/v1', 'Sample application')
+    openapi = RailsParamValidation::OpenApi.new(
+        RailsParamValidation.openapi.title,
+        RailsParamValidation.openapi.version,
+        RailsParamValidation.openapi.url,
+        RailsParamValidation.openapi.description
+    )
     puts YAML.dump(openapi.to_object)
   end
 end
