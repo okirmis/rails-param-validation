@@ -10,6 +10,8 @@ require_relative './rails-param-validation/validators/boolean'
 require_relative './rails-param-validation/validators/string'
 require_relative './rails-param-validation/validators/uuid'
 require_relative './rails-param-validation/validators/regex'
+require_relative './rails-param-validation/validators/date'
+require_relative './rails-param-validation/validators/datetime'
 require_relative './rails-param-validation/validators/custom_type'
 require_relative './rails-param-validation/validators/constant'
 require_relative './rails-param-validation/validators/array'
@@ -27,6 +29,8 @@ module RailsParamValidation
   ValidatorFactory.register BooleanValidatorFactory.new
   ValidatorFactory.register StringValidatorFactory.new
   ValidatorFactory.register UuidValidatorFactory.new
+  ValidatorFactory.register DateTimeValidatorFactory.new
+  ValidatorFactory.register DateValidatorFactory.new
   ValidatorFactory.register CustomTypeValidatorFactory.new
   ValidatorFactory.register RegexValidatorFactory.new
   ValidatorFactory.register OptionalValidatorFactory.new
