@@ -9,7 +9,7 @@ module RailsParamValidation
       @paths = []
       @param_validation_enabled = true
       @description = ''
-      @request_body_type = RailsParamValidation.config.default_body_content_type
+      @request_body_type = RailsParamValidation.config.default_body_content_type if defined?(Rails)
       @responses = {}
     end
 
