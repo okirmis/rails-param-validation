@@ -94,7 +94,6 @@ module RailsParamValidation
 
     def load_from_annotations
       AnnotationManager.instance.classes.each do |klass|
-        puts klass
         AnnotationManager.instance.methods(klass).each do |method|
           params = AnnotationManager.instance.method_annotation klass, method, :param_definition
           next if params.nil?
