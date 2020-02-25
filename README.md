@@ -1,11 +1,41 @@
 # RailsParamValidation
 
 [![pipeline status](https://git.iftrue.de/okirmis/rails-param-validation/badges/master/pipeline.svg)](https://git.iftrue.de/okirmis/rails-param-validation/commits/master)
-[![coverage report](https://git.iftrue.de/okirmis/rails-param-validation/badges/master/coverage.svg)](https://git.iftrue.de/okirmis/rails-param-validation/commits/master)
 
+This gem provides parameter validation for Rails using a declarative parameter definition. It also supports an export of the definition as an OpenAPI document.
 
+## Quick Example
 
-This gem provides parameter validation for Rails.
+Let's take a look at a very simple example: a controller with a sample action, which gets a list of floats, rounds them to the nearest integer and returns it in a json encoded form.
+
+```ruby
+class ExampleController
+
+  desc "Round float values"
+  # Expect a parameter with the name "values" which contains an array of floats
+  query_param :values, ArrayType(Float), "Values to round"
+  # Document the response of http status 200, which is an array of integers
+  response 200, :success, ArrayType(Integer), "Rounded values response"
+  def sample_action
+    render json: params[:values].map(&:round)
+  end
+
+end
+```
+
+Sending a valid request, the parameters are validated and casted correctly and we get the response one would expect:
+
+```
+$ curl -H 'Accept: application/json' "http://localhost:3000/round?values[]=1.5&values[]=2.0&values[]=-0.777"
+[2,2,-1]
+```
+
+When a request with invalid parameters is sent, we get an error response which also describes the error.
+
+```
+$ curl -H 'Accept: application/json' "http://localhost:3000/round?values[]=1.5&values[]=2.0&values[]=XYZ"
+{"status":"fail","errors":[{"path":"values/2","message":"Expected a float"}]}
+```
 
 ## Installation
 
@@ -22,22 +52,3 @@ And then execute:
 Or install it yourself as:
 
     $ gem install rails-param-validator
-
-## Usage
-
-TODO: Write usage instructions here
-
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/rails-param-validator.
-
-
-## License
-
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
