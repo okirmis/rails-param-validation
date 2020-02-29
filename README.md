@@ -10,30 +10,33 @@ Let's take a look at a very simple example: a controller with a sample action, w
 
 ```ruby
 class ExampleController
+  desc "Show the functionality of this gem"
 
-  desc "Round float values"
-  # Expect a parameter with the name "values" which contains an array of floats
-  query_param :values, ArrayType(Float), "Values to round"
-  # Document the response of http status 200, which is an array of integers
-  response 200, :success, ArrayType(Integer), "Rounded values response"
+  action "Round float values" do
+    # Expect a parameter with the name "values" which contains an array of floats
+    query_param :values, ArrayType(Float), "Values to round"
+    # Document the response of http status 200, which is an array of integers
+    response 200, :success, ArrayType(Integer), "Rounded values response"
+  end
   def sample_action
     render json: params[:values].map(&:round)
   end
 
+  # We assume GET /round to be mapped to this action
 end
 ```
 
 Sending a valid request, the parameters are validated and casted correctly and we get the response one would expect:
 
 ```
-$ curl -H 'Accept: application/json' "http://localhost:3000/round?values[]=1.5&values[]=2.0&values[]=-0.777"
+$ curl -H "Accept: application/json" "http://localhost:3000/round?values[]=1.5&values[]=2.0&values[]=-0.777"
 [2,2,-1]
 ```
 
 When a request with invalid parameters is sent, we get an error response which also describes the error.
 
 ```
-$ curl -H 'Accept: application/json' "http://localhost:3000/round?values[]=1.5&values[]=2.0&values[]=XYZ"
+$ curl -H "Accept: application/json" "http://localhost:3000/round?values[]=1.5&values[]=2.0&values[]=XYZ"
 {"status":"fail","errors":[{"path":"values/2","message":"Expected a float"}]}
 ```
 

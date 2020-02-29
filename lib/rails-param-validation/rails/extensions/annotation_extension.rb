@@ -18,7 +18,7 @@ module RailsParamValidation
         # If there is a parameter definition: annotate this method and reset the carrier variable
         if @param_definition
           # Store where this annotation came from
-          class_name = self.name.gsub(/Controller$/, '').downcase.to_sym
+          class_name = RailsHelper.controller_to_tag self
           method_name = name.to_sym
 
           @param_definition.store_origin! class_name, method_name
@@ -38,7 +38,7 @@ module RailsParamValidation
 
     module ClassMethods
       def param_definition
-        @param_definition ||= ActionDefinition.new
+        @param_definition || raise(StandardError.new "Annotation must be part of an operation-block")
       end
 
       # @param [Symbol] name Name of the parameter as it is accessible by params[<name>]
@@ -65,7 +65,11 @@ module RailsParamValidation
       end
 
       def desc(description)
-        param_definition.description = description
+        if @param_definition
+          param_definition.description = description
+        else
+          AnnotationManager.instance.annotate_class! self, :description, description
+        end
       end
 
       def no_params
@@ -80,26 +84,11 @@ module RailsParamValidation
         param_definition.add_response status, name, schema, description
       end
 
-      # @param [Hash] options to configure the route.
-      def route(options)
-        [:get, :put, :post, :patch].each do |method|
-          paths = options.fetch(method, [])
-          paths = [paths] unless paths.is_a? Array
+      def action(description = nil)
+        @param_definition = ActionDefinition.new
+        @param_definition.description = description if description.present?
 
-          paths.each { |path| param_definition.add_path method, path }
-        end
-
-        if options.key? :params
-          if options[:params] === :all
-            accept_all_params
-          elsif options[:params] === :none
-            no_params
-          else
-            raise ArgumentError.new(":params option requires one of the following values: :all, :none")
-          end
-        end
-
-        yield if block_given?
+        yield
       end
     end
   end

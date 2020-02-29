@@ -9,6 +9,7 @@ require_relative '../errors/missing_parameter_annotation'
 require_relative '../errors/type_not_found'
 
 require_relative './config'
+require_relative './helper'
 
 module RailsParamValidation
   class Railtie < Rails::Railtie

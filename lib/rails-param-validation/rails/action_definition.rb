@@ -52,7 +52,7 @@ module RailsParamValidation
 
     def finalize!(class_name, method_name)
       @responses.each do |code, response|
-        name = "#{class_name.to_s.capitalize}#{method_name.to_s.capitalize}#{Rack::Utils::SYMBOL_TO_STATUS_CODE.key(code).to_s.camelize}Response".to_sym
+        name = "#{class_name.to_s.capitalize}#{method_name.to_s.camelcase}#{Rack::Utils::SYMBOL_TO_STATUS_CODE.key(code).to_s.camelize}Response".to_sym
         AnnotationTypes::CustomT.register(name, response[:schema])
 
         response.merge!(schema: AnnotationTypes::CustomT.new(name))

@@ -15,6 +15,7 @@ module RailsParamValidation
       }
 
       @actions = []
+      @tags = {}
 
       load_from_annotations
     end
@@ -24,6 +25,7 @@ module RailsParamValidation
         openapi: OPENAPI_VERSION,
         info: { version: @info[:version], title: @info[:title], description: @info[:description] },
         servers: @info[:url].map { |url| { url: url } },
+        tags: @tags.map { |tag, description| { name: tag, description: description } },
         paths: {},
         components: { schemas: {} }
       }
@@ -44,10 +46,9 @@ module RailsParamValidation
           param_definition
         end
 
-        RoutingHelper.routes_for(operation.controller.to_s, operation.action.to_s).each do |route|
+        RoutingHelper.routes_for(operation.controller.to_s.underscore, operation.action.to_s).each do |route|
           action_definition = {
               operationId: "#{route[:method].downcase}#{route[:path].split(/[^a-zA-Z0-9]+/).map(&:downcase).map(&:capitalize).join}",
-              summary: operation.description,
               tags: [operation.controller],
               parameters: parameters,
               responses: operation.responses.map do |status, values|
@@ -64,6 +65,8 @@ module RailsParamValidation
                 ]
               end.to_h
           }
+
+          action_definition.merge!(summary: operation.description) if operation.description.present?
 
           if body.any?
             body_type_name = "#{operation.controller.capitalize}#{operation.action.capitalize}Body".to_sym
@@ -94,6 +97,12 @@ module RailsParamValidation
 
     def load_from_annotations
       AnnotationManager.instance.classes.each do |klass|
+        description = AnnotationManager.instance.class_annotation klass, :description
+
+        if description
+          @tags[RailsHelper.controller_to_tag klass] = description
+        end
+
         AnnotationManager.instance.methods(klass).each do |method|
           params = AnnotationManager.instance.method_annotation klass, method, :param_definition
           next if params.nil?
