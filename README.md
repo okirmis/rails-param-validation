@@ -4,10 +4,10 @@
 
 This gem provides parameter validation for Rails using a declarative parameter definition and makes the automatic validation of complex parameters very easy. It also supports an export of the definition as an OpenAPI document.
 
-* [Why this gem?](./main-idea.md)
-* [Getting started](./getting-started.md)
-* [Annotations](./annotations.md)
-* [OpenAPI Export](./openapi.md)
+* [Why this gem?](./docs/main-idea.md)
+* [Getting started](./docs/getting-started.md)
+* [Annotations](./docs/annotations.md)
+* [OpenAPI Export](./docs/openapi.md)
 
 ## Quick Example
 
