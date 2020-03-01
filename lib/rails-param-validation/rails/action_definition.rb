@@ -38,9 +38,8 @@ module RailsParamValidation
       }
     end
 
-    def add_response(status, name, schema, description)
+    def add_response(status, schema, description)
       @responses[status] = {
-          name: name,
           schema: schema,
           description: description
       }

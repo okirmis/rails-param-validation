@@ -80,13 +80,13 @@ module RailsParamValidation
         param_definition.disable_param_validation!
       end
 
-      def response(status, name, schema, description)
-        param_definition.add_response status, name, schema, description
+      def response(status, schema, description)
+        param_definition.add_response status, schema, description
       end
 
       def action(description = nil)
         @param_definition = ActionDefinition.new
-        @param_definition.description = description if description.present?
+        @param_definition.description = description
 
         yield
       end

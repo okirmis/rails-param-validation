@@ -9,7 +9,7 @@ class AlternativesValidator < Validator
     end
 
     def matches?(path, data)
-      result = MatchResult.new nil
+      result = MatchResult.new nil, path, "The value did not match any of the alternatives"
 
       @inner_validators.each_with_index do |validator, idx|
         match = validator.matches?(path + ["[#{idx}]"], data)
