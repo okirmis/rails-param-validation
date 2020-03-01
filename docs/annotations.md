@@ -24,15 +24,15 @@ end
 
 **query_param**
 
-Parameter passed via query string, e.g. `http://localhost/my_action?parameter=value`. The first value is the parameter name (which must be a symbol), the second is the [type definition](./type-definition.md). The last (optional) parameter to this call is the description.
+Parameter passed via query string, e.g. `http://localhost/my_action?parameter=value`. The first value is the parameter name (which must be a symbol), the second is the [type definition](./docs/type-definition.md). The last (optional) parameter to this call is the description.
 
 **path_param**
 
-Parameter passed as part of the actions route, e.g. `http://localhost/my_action/value` where the route definition is something like `get '/my_action/:parameter, to: 'my_controller#my_action'`. The first value is the parameter name (which must be a symbol), the second is the [type definition](./type-definition.md). The last (optional) parameter to this call is the description.
+Parameter passed as part of the actions route, e.g. `http://localhost/my_action/value` where the route definition is something like `get '/my_action/:parameter, to: 'my_controller#my_action'`. The first value is the parameter name (which must be a symbol), the second is the [type definition](./docs/type-definition.md). The last (optional) parameter to this call is the description.
 
 **body_param**
 
-Parameter as part of a JSON body in a POST/PUT/PATCH operation. The first value is the parameter name (which must be a symbol) as the JSON body must be a JSON object which has a key named like the parameter. The second parameter is the [type definition](./type-definition.md). The last (optional) parameter to this call is the description.
+Parameter as part of a JSON body in a POST/PUT/PATCH operation. The first value is the parameter name (which must be a symbol) as the JSON body must be a JSON object which has a key named like the parameter. The second parameter is the [type definition](./docs/type-definition.md). The last (optional) parameter to this call is the description.
 
 Example body:
 
@@ -55,7 +55,7 @@ end
 
 **response**
 
-The response annotation defines the possible responses the action can generate, where the first parameter is the HTTP status code, the second is the [type definition](./type-definition.md). The last (optional) parameter to this call is the description.
+The response annotation defines the possible responses the action can generate, where the first parameter is the HTTP status code, the second is the [type definition](./docs/type-definition.md). The last (optional) parameter to this call is the description.
 
 **accept_all_params**
 
