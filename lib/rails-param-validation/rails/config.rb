@@ -4,10 +4,19 @@ module RailsParamValidation
     attr_accessor :title, :version, :url, :description
 
     def initialize
+      app_class = Rails.application.class
+
       self.url = 'http://localhost:3000'
-      self.title = Rails.application.class.module_parent_name
+      self.title = app_name(app_class)
       self.version = '1.0'
-      self.description = "#{Rails.application.class.module_parent_name} application"
+      self.description = "#{app_name(app_class)} application"
+    end
+
+    private
+
+    def app_name(klass)
+      return klass.module_parent_name if klass.respond_to? :module_parent_name
+      klass.parent.name
     end
   end
 
