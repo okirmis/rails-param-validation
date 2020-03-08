@@ -7,6 +7,7 @@ This gem provides parameter validation for Rails using a declarative parameter d
 * [Why this gem?](./docs/main-idea.md)
 * [Getting started](./docs/getting-started.md)
 * [Annotations](./docs/annotations.md)
+* [How to specify types](./docs/type-definition.md)
 * [OpenAPI Export](./docs/openapi.md)
 
 ## Quick Example
