@@ -1,6 +1,4 @@
-# Main Idea
-
-## What problem does this gem try to solve?
+# What problem does this gem try to solve?
 
 Let's say we expect a JSON body that contains an array of objects which contain - besides others - an array of timestamps (date-times), e.g.:
 
@@ -24,7 +22,7 @@ Let's say we expect a JSON body that contains an array of objects which contain 
 
 Validating such a request requires a lot of code, involving a lot of `is_a?` statements etc. This is both - annoying from a developer perspective and error prone.
 
-## How does this gem solve this issue?
+# How does this gem solve this issue?
 
 This gem introduces a simple way to annotate controller actions with declarative parameter type annotations. For the example shown above, it would look like this:
 
