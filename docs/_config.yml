@@ -1,1 +1,3 @@
 theme: jekyll-theme-slate
+title: Rails Parameter Validation
+description: Declarative, easy-to-use parameter validations and OpenAPI export
