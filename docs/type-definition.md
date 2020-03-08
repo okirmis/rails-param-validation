@@ -126,14 +126,17 @@ query_param :expiration_date, Date, "Date until the article will be available"
 ### Optional Value
 <a name="type-optional"></a>
 
-If a value is not passed, define a default value which is returned in this case. It can be used with any inner type.
+If a value is not passed, define a default value which is returned in this case. It can be used with any inner type. If the value is passed, it is validated. If it does not match, the value is rejected. If it is not specified at all, the default value is used.
 
 Example:
 ```ruby
-query_param :expiration_date, Optional(Date, Date.today + 14.days), "Date until the article will be available"
+query_param :public, Optional(Boolean, false), "Will the article be publicly available"
+query_param :expiration_date, Optional(Date, -> { Date.today + 14.days }), "Date until the article will be available"
 ```
 
-If the value is passed, it is validated. If it does not match, the value is rejected. If it is not specified at all, the default value is used.
+In the first example, the constant is `false` is returned if no value is specified.
+
+In the second example, the `Proc` is evaluated whenever no data is passed for the parameter.
 
 ### Array
 <a name="type-array"></a>

@@ -10,7 +10,11 @@ module RailsParamValidation
 
     def matches?(path, data)
       if data.nil?
-        MatchResult.new @default
+        if @default.is_a? Proc
+          MatchResult.new @default.call
+        else
+          MatchResult.new @default
+        end
       else
         @inner_validator.matches? path, data
       end
