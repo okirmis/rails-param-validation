@@ -38,7 +38,7 @@ module RailsParamValidation
 
       if result.matches?
         # Copy the parameters if the validation succeeded
-        @validated_parameters = result.value
+        @validated_parameters = result.value.merge(action: action, controller: controller)
       else
         # Render an appropriate error message
         _render_invalid_param_response result
