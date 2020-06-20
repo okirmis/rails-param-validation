@@ -24,7 +24,7 @@ end
 
 **query_param**
 
-Parameter passed via query string, e.g. `http://localhost/my_action?parameter=value`. The first value is the parameter name (which must be a symbol), the second is the [type definition](./docs/type-definition.md). The last (optional) parameter to this call is the description.
+Parameter passed via query string, e.g. `http://localhost/my_action?parameter=value`. The first value is the parameter name (which must be a symbol), the second is the [type definition](./type-definition.md). The last (optional) parameter to this call is the description.
 
 **path_param**
 
