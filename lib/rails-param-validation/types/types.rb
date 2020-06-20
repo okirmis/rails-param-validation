@@ -1,5 +1,9 @@
 module RailsParamValidation
 
+def self.register(type, schema)
+  AnnotationTypes::CustomT.register type, schema
+end
+
 module AnnotationTypes
 class AnnotationT
   attr_reader :inner_type
