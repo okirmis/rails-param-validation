@@ -20,6 +20,11 @@ module RailsParamValidation
       ActionController::Base.send :include, AnnotationExtension
       ActionController::Base.send :include, CustomTypesExtension
       ActionController::Base.send :extend, RailsParamValidation::Types
+
+      ActionController::API.send :include, ActionControllerExtension
+      ActionController::API.send :include, AnnotationExtension
+      ActionController::API.send :include, CustomTypesExtension
+      ActionController::API.send :extend, RailsParamValidation::Types
     end
 
     rake_tasks do

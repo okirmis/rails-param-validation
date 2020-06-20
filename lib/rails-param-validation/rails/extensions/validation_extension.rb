@@ -50,21 +50,29 @@ module RailsParamValidation
     end
 
     def _render_invalid_param_response(result)
-      # Depending on the accept header, choose the way to answer
-      respond_to do |format|
-        format.html do
-          if RailsParamValidation.config.use_default_html_response
-            _create_html_error result
-          else
-            raise ParamValidationFailedError.new(result)
+      if respond_to? :respond_to
+        # Depending on the accept header, choose the way to answer
+        respond_to do |format|
+          format.html do
+            if RailsParamValidation.config.use_default_html_response
+              _create_html_error result
+            else
+              raise ParamValidationFailedError.new(result)
+            end
+          end
+          format.json do
+            if RailsParamValidation.config.use_default_json_response
+              _create_json_error result
+            else
+              raise ParamValidationFailedError.new(result)
+            end
           end
         end
-        format.json do
-          if RailsParamValidation.config.use_default_json_response
-            _create_json_error result
-          else
-            raise ParamValidationFailedError.new(result)
-          end
+      else
+        if RailsParamValidation.config.use_default_json_response
+          _create_json_error result
+        else
+          raise ParamValidationFailedError.new(result)
         end
       end
     end
