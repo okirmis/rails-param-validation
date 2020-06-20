@@ -82,14 +82,14 @@ In this case, `params[:radius].is_a? Float` returns `true`.
 <a name="type-boolean"></a>
 ### Boolean
 
-Accepts a float or a string, which represents a boolean (either `"true"` or `"false"`).
+Accepts a boolean or a string, which represents a boolean (either `"true"` or `"false"`).
 
 Example:
 ```ruby
-query_param :radius, Float, "Search radius"
+query_param :published, Boolean, "Indicate if a blog post is published"
 ```
 
-In this case, `params[:radius].is_a? Float` returns `true`.
+In this case, `params[:published].is_a?(TrueClass) || params[:published].is_a?(FalseClass)` returns `true`.
 
 
 <a name="type-uuid"></a>
