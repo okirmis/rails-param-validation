@@ -1,6 +1,6 @@
 namespace :openapi do
 
-  desc "Export OpenAPI definition to to openapi.yaml"
+  desc "Export OpenAPI definition to openapi.yaml"
   task export: :environment do
     # Ensure all controllers are loaded
     if defined? Zeitwerk
@@ -18,7 +18,7 @@ namespace :openapi do
         RailsParamValidation.openapi.description
     )
 
-    filename = Rails.root.join("openapi.yaml").to_s
+    filename = RailsParamValidation.openapi.file_path
     print "Writing #{filename}..."
 
     begin

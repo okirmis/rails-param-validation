@@ -1,7 +1,7 @@
 module RailsParamValidation
 
   class OpenApiMetaConfig
-    attr_accessor :title, :version, :url, :description
+    attr_accessor :title, :version, :url, :description, :file_path
 
     def initialize
       app_class = Rails.application.class
@@ -10,6 +10,7 @@ module RailsParamValidation
       self.title = app_name(app_class)
       self.version = '1.0'
       self.description = "#{app_name(app_class)} application"
+      self.file_path = Rails.root.join("openapi.yaml").to_s
     end
 
     private
