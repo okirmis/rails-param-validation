@@ -29,7 +29,9 @@ module RailsParamValidation
       Rails.application.routes.routes.each do |route|
         if route.defaults[:controller] == controller && route.defaults[:action] == action
           Formatter.new.accept(route.path.ast, [""]).each do |path|
-            routes.push(path: path, method: route.verb)
+            if !RailsParamValidation.openapi.skip_format_endpoints || !path.end_with?('.{format}')
+              routes.push(path: path, method: route.verb)
+            end
           end
         end
       end

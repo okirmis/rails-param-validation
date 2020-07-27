@@ -1,7 +1,7 @@
 module RailsParamValidation
 
   class ActionDefinition
-    attr_reader :params, :request_body_type, :paths, :responses, :controller, :action
+    attr_reader :params, :request_body_type, :paths, :responses, :controller, :action, :security
     attr_accessor :description
 
     def initialize
@@ -11,6 +11,8 @@ module RailsParamValidation
       @description = ''
       @request_body_type = RailsParamValidation.config.default_body_content_type if defined?(Rails)
       @responses = {}
+      @flags = {}
+      @security = []
     end
 
     def store_origin!(controller, action)
@@ -36,6 +38,18 @@ module RailsParamValidation
           description: description,
           type: type
       }
+    end
+
+    def add_security(security)
+      @security.push(security.is_a?(Hash) ? security : { security => [] })
+    end
+
+    def add_flag(name, value)
+      @flags[name.to_sym] = value
+    end
+
+    def flag(name, default)
+      @flags.fetch(name, default)
     end
 
     def add_response(status, schema, description)

@@ -22,6 +22,7 @@ module RailsParamValidation
           method_name = name.to_sym
 
           @param_definition.store_origin! class_name, method_name
+          RailsParamValidation.config.post_action_definition_hook.call(@param_definition)
           @param_definition.finalize! class_name, method_name
 
           AnnotationManager.instance.annotate_method! self, name, :param_definition, @param_definition
@@ -84,9 +85,18 @@ module RailsParamValidation
         param_definition.add_response status, schema, description
       end
 
-      def action(description = nil)
+      def flag(name, value, _comment = nil)
+        @param_definition.add_flag name, value
+      end
+
+      def security_hint(security)
+        @param_definition.add_security(security)
+      end
+
+      def action(description = nil, flags = RailsParamValidation.config.default_action_flags)
         @param_definition = ActionDefinition.new
         @param_definition.description = description
+        flags.each { |name, value| @param_definition.add_flag name, value }
 
         yield
       end

@@ -51,6 +51,7 @@ module RailsParamValidation
               operationId: "#{route[:method].downcase}#{route[:path].split(/[^a-zA-Z0-9]+/).map(&:downcase).map(&:capitalize).join}",
               tags: [operation.controller],
               parameters: parameters,
+              security: operation.security,
               responses: operation.responses.map do |status, values|
                 [
                     status.to_s,
@@ -90,6 +91,9 @@ module RailsParamValidation
         object[:components][:schemas][name] = ValidatorFactory.create(AnnotationTypes::CustomT.registered(name)).to_openapi
       end
 
+      if RailsParamValidation.openapi.security_schemes.any?
+        object[:components][:securitySchemes] = RailsParamValidation.openapi.security_schemes
+      end
       stringify_values object
     end
 

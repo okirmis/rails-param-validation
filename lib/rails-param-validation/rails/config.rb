@@ -1,7 +1,7 @@
 module RailsParamValidation
 
   class OpenApiMetaConfig
-    attr_accessor :title, :version, :url, :description
+    attr_accessor :title, :version, :url, :description, :file_path, :security_schemes, :skip_format_endpoints
 
     def initialize
       app_class = Rails.application.class
@@ -10,6 +10,9 @@ module RailsParamValidation
       self.title = app_name(app_class)
       self.version = '1.0'
       self.description = "#{app_name(app_class)} application"
+      self.file_path = Rails.root.join("openapi.yaml").to_s
+      self.security_schemes = {}
+      self.skip_format_endpoints = true
     end
 
     private
@@ -26,6 +29,8 @@ module RailsParamValidation
     attr_accessor :use_validator_caching
     attr_accessor :raise_on_missing_annotation
     attr_accessor :default_body_content_type
+    attr_accessor :default_action_flags
+    attr_accessor :post_action_definition_hook
     attr_reader   :openapi
 
     def initialize
@@ -34,6 +39,8 @@ module RailsParamValidation
       @use_validator_caching = Rails.env.production?
       @raise_on_missing_annotation = true
       @default_body_content_type = 'application/json'
+      @default_action_flags = {}
+      @post_action_definition_hook = ->(_action_definition) {}
     end
   end
 
