@@ -25,7 +25,7 @@ module RailsParamValidation
         openapi: OPENAPI_VERSION,
         info: { version: @info[:version], title: @info[:title], description: @info[:description] },
         servers: @info[:url].map { |url| { url: url } },
-        tags: @tags.map { |tag, description| { name: tag, description: description } },
+        tags: @tags.map { |tag, description| { name: RailsHelper.clean_controller_name(tag), description: description } },
         paths: {},
         components: { schemas: {} }
       }
@@ -49,7 +49,7 @@ module RailsParamValidation
         RoutingHelper.routes_for(operation.controller.to_s.underscore, operation.action.to_s).each do |route|
           action_definition = {
               operationId: "#{route[:method].downcase}#{route[:path].split(/[^a-zA-Z0-9]+/).map(&:downcase).map(&:capitalize).join}",
-              tags: [operation.controller],
+              tags: [RailsHelper.clean_controller_name(operation.controller)],
               parameters: parameters,
               security: operation.security,
               responses: operation.responses.map do |status, values|
@@ -70,7 +70,7 @@ module RailsParamValidation
           action_definition.merge!(summary: operation.description) if operation.description.present?
 
           if body.any?
-            body_type_name = "#{operation.controller.capitalize}#{operation.action.capitalize}Body".to_sym
+            body_type_name = "#{RailsHelper.clean_controller_name operation.controller}#{operation.action.capitalize}Body".to_sym
             AnnotationTypes::CustomT.register(body_type_name, body)
 
             action_definition[:requestBody] = {
@@ -104,7 +104,7 @@ module RailsParamValidation
         description = AnnotationManager.instance.class_annotation klass, :description
 
         if description
-          @tags[RailsHelper.controller_to_tag klass] = description
+          @tags[RailsHelper.controller_to_tag klass.constantize] = description
         end
 
         AnnotationManager.instance.methods(klass).each do |method|
