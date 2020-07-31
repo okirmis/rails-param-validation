@@ -1,10 +1,10 @@
 module RailsParamValidation
 
   class ActionDefinition
-    attr_reader :params, :request_body_type, :paths, :responses, :controller, :action, :security
+    attr_reader :params, :request_body_type, :paths, :responses, :controller, :action, :security, :source_file
     attr_accessor :description
 
-    def initialize
+    def initialize(source_file)
       @params = {}
       @paths = []
       @param_validation_enabled = true
@@ -12,6 +12,7 @@ module RailsParamValidation
       @request_body_type = RailsParamValidation.config.default_body_content_type if defined?(Rails)
       @responses = {}
       @flags = {}
+      @source_file = source_file
       @security = []
     end
 
@@ -65,7 +66,10 @@ module RailsParamValidation
 
     def finalize!(class_name, method_name)
       @responses.each do |code, response|
-        name = "#{RailsHelper.clean_controller_name(class_name)}#{method_name.to_s.camelcase}#{Rack::Utils::SYMBOL_TO_STATUS_CODE.key(code).to_s.camelize}Response".to_sym
+        name = Types::Namespace.with_namespace(
+            Types::Namespace.fetch(@source_file),
+            "#{RailsHelper.clean_controller_name(class_name)}.#{method_name.to_s.camelcase}.#{Rack::Utils::SYMBOL_TO_STATUS_CODE.key(code).to_s.camelize}Response".to_sym
+        )
         AnnotationTypes::CustomT.register(name, response[:schema])
 
         response.merge!(schema: AnnotationTypes::CustomT.new(name))

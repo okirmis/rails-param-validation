@@ -1,7 +1,10 @@
 module RailsParamValidation
 
 def self.register(type, schema)
-  AnnotationTypes::CustomT.register type, schema
+  AnnotationTypes::CustomT.register(
+      Namespace.with_namespace(Namespace.fetch(Namespace.caller_file), type),
+      schema
+  )
 end
 
 module AnnotationTypes
@@ -72,6 +75,58 @@ end
 end
 
 module Types
+  class Namespace
+    def self.store(scope, namespace)
+      map[scope] = namespace
+    end
+
+    def self.fetch(scope)
+      path = scope.split('/')
+
+      (path.size - 1).times do
+        key = path.join '/'
+        return map[key] if map.key? key
+
+        path.pop
+      end
+    end
+
+    def self.caller_file
+      caller_locations(2, 1)[0].path
+    end
+
+    def self.with_namespace(namespace, type)
+      if namespace
+        path = namespace.to_s.split('.')
+
+        while type.start_with?("_")
+          type = type[1..-1]
+          path.pop
+        end
+
+        "#{path.join(".")}.#{type}".to_sym
+      else
+        type
+      end
+    end
+
+    class << self
+      protected
+
+      def map
+        @map ||= { '' => nil }
+      end
+    end
+  end
+
+  def FileNamespace(namespace)
+    Namespace.store Namespace.caller_file, namespace
+  end
+
+  def DirectoryNamespace(namespace)
+    Namespace.store File.dirname(caller_locations(1, 1)[0].path), namespace
+  end
+
   def ArrayType(inner_type)
     AnnotationTypes::ArrayT.new(inner_type)
   end
@@ -85,7 +140,7 @@ module Types
   end
 
   def Type(type)
-    AnnotationTypes::CustomT.new(type)
+    AnnotationTypes::CustomT.new(Namespace.with_namespace(Namespace.fetch(Namespace.caller_file), type))
   end
 end
 

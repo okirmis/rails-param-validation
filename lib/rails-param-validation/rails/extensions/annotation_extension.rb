@@ -94,7 +94,7 @@ module RailsParamValidation
       end
 
       def action(description = nil, flags = RailsParamValidation.config.default_action_flags)
-        @param_definition = ActionDefinition.new
+        @param_definition = ActionDefinition.new(Types::Namespace.caller_file)
         @param_definition.description = description
         flags.each { |name, value| @param_definition.add_flag name, value }
 

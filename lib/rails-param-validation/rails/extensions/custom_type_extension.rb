@@ -6,7 +6,8 @@ module RailsParamValidation
 
     module ClassMethods
       def declare(type, schema)
-        RailsParamValidation::AnnotationTypes::CustomT.register type, schema
+        namespace = Types::Namespace.fetch(Types::Namespace.caller_file)
+        RailsParamValidation::AnnotationTypes::CustomT.register Types::Namespace.with_namespace(namespace, type), schema
       end
     end
   end

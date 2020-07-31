@@ -70,7 +70,10 @@ module RailsParamValidation
           action_definition.merge!(summary: operation.description) if operation.description.present?
 
           if body.any?
-            body_type_name = "#{RailsHelper.clean_controller_name operation.controller}#{operation.action.capitalize}Body".to_sym
+            body_type_name = Types::Namespace.with_namespace(
+                Types::Namespace.fetch(operation.source_file),
+                "#{RailsHelper.clean_controller_name operation.controller}.#{operation.action.to_s.camelcase}.Body".to_sym
+            )
             AnnotationTypes::CustomT.register(body_type_name, body)
 
             action_definition[:requestBody] = {
