@@ -6,6 +6,8 @@ module RailsParamValidation
 
     # The before_action function called which does the actual work
     def auto_validate_params!
+      @validated_parameters = nil
+
       # @type [ActionDefinition] definition
       definition = RailsParamValidation::AnnotationManager.instance.method_annotation self.class.name, action_name.to_sym, :param_definition
 
@@ -38,7 +40,7 @@ module RailsParamValidation
 
       if result.matches?
         # Copy the parameters if the validation succeeded
-        @validated_parameters = result.value.merge('action' => action, 'controller' => controller)
+        @validated_parameters = result.value.merge(action: action, controller: controller)
       else
         # Render an appropriate error message
         _render_invalid_param_response result
