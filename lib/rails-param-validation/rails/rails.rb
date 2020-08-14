@@ -17,15 +17,14 @@ module RailsParamValidation
 
     initializer 'rails_param_validation.action_controller_extension' do
       ActiveSupport.on_load(:action_controller) do
-        ActionController::Base.send :include, ActionControllerExtension
-        ActionController::Base.send :include, AnnotationExtension
-        ActionController::Base.send :include, CustomTypesExtension
-        ActionController::Base.send :extend, RailsParamValidation::Types
+        RailsParamValidation.config.auto_include_in_classes.each do |klass_name|
+          klass = klass_name.constantize
 
-        ActionController::API.send :include, ActionControllerExtension
-        ActionController::API.send :include, AnnotationExtension
-        ActionController::API.send :include, CustomTypesExtension
-        ActionController::API.send :extend, RailsParamValidation::Types
+          klass.send :include, ActionControllerExtension
+          klass.send :include, AnnotationExtension
+          klass.send :include, CustomTypesExtension
+          klass.send :extend, RailsParamValidation::Types
+        end
       end
     end
 

@@ -31,6 +31,7 @@ module RailsParamValidation
     attr_accessor :default_body_content_type
     attr_accessor :default_action_flags
     attr_accessor :post_action_definition_hook
+    attr_accessor :auto_include_in_classes
     attr_reader   :openapi
 
     def initialize
@@ -41,6 +42,7 @@ module RailsParamValidation
       @default_body_content_type = 'application/json'
       @default_action_flags = {}
       @post_action_definition_hook = ->(_action_definition) {}
+      @auto_include_in_classes = %w[ActionController::Base ActionController::API]
     end
   end
 
