@@ -2,7 +2,7 @@ module RailsParamValidation
 
 def self.register(type, schema)
   AnnotationTypes::CustomT.register(
-      Namespace.with_namespace(Namespace.fetch(Namespace.caller_file), type),
+      Types::Namespace.with_namespace(Types::Namespace.fetch(Types::Namespace.caller_file), type),
       schema
   )
 end
