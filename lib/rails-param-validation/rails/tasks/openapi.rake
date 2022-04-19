@@ -1,6 +1,6 @@
 namespace :openapi do
 
-  desc "Export OpenAPI definition to openapi.yaml"
+  desc "Export OpenAPI definition to openapi.json"
   task export: :environment do
     # Ensure all controllers are loaded
     if defined? Zeitwerk
@@ -22,7 +22,7 @@ namespace :openapi do
     print "Writing #{filename}..."
 
     begin
-      File.open(filename, "w") { |f| f.write YAML.dump(openapi.to_object) }
+      File.open(filename, "w") { |f| f.write JSON.pretty_generate(openapi.to_object) }
       puts " done."
     rescue Exception => e
       puts " failed."

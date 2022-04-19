@@ -7,7 +7,12 @@ module RailsParamValidation
 
     def self.clean_controller_name(klass)
       klass = klass.to_s if klass.is_a? Symbol
-      (klass.is_a?(String) ? klass : klass.name).gsub(/Controller$/, '').split('::').last.capitalize.to_sym
+      (klass.is_a?(String) ? klass : klass.name).gsub(/Controller$/, '').split("::").join(".").to_sym
+    end
+
+    def self.clean_name(klass)
+      klass = klass.to_s if klass.is_a? Symbol
+      (klass.is_a?(String) ? klass : klass.name).split("::").join(".").to_sym
     end
   end
 

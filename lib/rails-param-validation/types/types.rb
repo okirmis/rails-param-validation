@@ -89,6 +89,8 @@ module Types
 
         path.pop
       end
+
+      nil
     end
 
     def self.caller_file
@@ -140,7 +142,11 @@ module Types
   end
 
   def Type(type)
-    AnnotationTypes::CustomT.new(Namespace.with_namespace(Namespace.fetch(Namespace.caller_file), type))
+    if type.is_a?(Class)
+      AnnotationTypes::CustomT.new(RailsHelper.clean_name(type))
+    else
+      AnnotationTypes::CustomT.new(Namespace.with_namespace(Namespace.fetch(Namespace.caller_file), type))
+    end
   end
 end
 

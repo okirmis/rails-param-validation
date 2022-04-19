@@ -46,7 +46,7 @@ module RailsParamValidation
           param_definition
         end
 
-        RoutingHelper.routes_for(operation.controller.to_s.underscore, operation.action.to_s).each do |route|
+        (operation.paths.any? ? operation.paths : RoutingHelper.routes_for(operation.controller.to_s.underscore, operation.action.to_s)).each do |route|
           action_definition = {
               operationId: "#{route[:method].downcase}#{route[:path].split(/[^a-zA-Z0-9]+/).map(&:downcase).map(&:capitalize).join}",
               tags: [RailsHelper.clean_controller_name(operation.controller)],

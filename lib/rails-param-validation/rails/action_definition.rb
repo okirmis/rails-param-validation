@@ -64,7 +64,11 @@ module RailsParamValidation
       @paths.push(method: method, path: path)
     end
 
-    def finalize!(class_name, method_name)
+    def finalize!(class_name, method_name, base_path)
+      @paths.each do |path|
+        path[:path] = ("/#{base_path}/#{path[:path]}").gsub(/\/+$/, "").gsub(/\/{2,}/, '/')
+      end
+
       @responses.each do |code, response|
         name = Types::Namespace.with_namespace(
             Types::Namespace.fetch(@source_file),

@@ -23,7 +23,7 @@ module RailsParamValidation
 
           @param_definition.store_origin! class_name, method_name
           RailsParamValidation.config.post_action_definition_hook.call(@param_definition)
-          @param_definition.finalize! class_name, method_name
+          @param_definition.finalize! class_name, method_name, (@base_paths || {}).fetch(self.name, self.name.underscore)
 
           AnnotationManager.instance.annotate_method! self, name, :param_definition, @param_definition
           @param_definition = nil
@@ -38,6 +38,11 @@ module RailsParamValidation
     end
 
     module ClassMethods
+      def base_path(path)
+        @base_paths ||= {}
+        @base_paths[self.name] = path
+      end
+
       def param_definition
         @param_definition || raise(StandardError.new "Annotation must be part of an operation-block")
       end
@@ -94,9 +99,22 @@ module RailsParamValidation
       end
 
       def action(description = nil, flags = RailsParamValidation.config.default_action_flags)
+        if description.is_a?(Hash)
+          method = description.keys.first.to_sym
+          path = description.values.first
+          description = ""
+        else
+          method = nil
+          path = nil
+        end
+
         @param_definition = ActionDefinition.new(Types::Namespace.caller_file)
         @param_definition.description = description
         flags.each { |name, value| @param_definition.add_flag name, value }
+
+        if method
+          @param_definition.add_path method, path
+        end
 
         yield
       end
