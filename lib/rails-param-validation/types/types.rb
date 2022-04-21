@@ -50,7 +50,10 @@ class CustomT < AnnotationT
   end
 
   def schema
-    CustomT.registry[@type]
+    schema = CustomT.registry[@type]
+    schema = CustomT.registry[@type] = schema.call if schema.is_a?(Proc)
+
+    schema
   end
 
   def self.register(type, schema)
