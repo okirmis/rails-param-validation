@@ -23,7 +23,7 @@ module RailsParamValidation
 
           @param_definition.store_origin! class_name, method_name
           RailsParamValidation.config.post_action_definition_hook.call(@param_definition)
-          @param_definition.finalize! class_name, method_name, (@base_paths || {}).fetch(self.name, self.name.underscore)
+          @param_definition.finalize! class_name, method_name, (@base_paths || {}).fetch(self.name, self.name.gsub(/Controller$/, "").underscore)
 
           AnnotationManager.instance.annotate_method! self, name, :param_definition, @param_definition
           @param_definition = nil

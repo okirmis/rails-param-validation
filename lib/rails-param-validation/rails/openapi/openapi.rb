@@ -67,7 +67,19 @@ module RailsParamValidation
               end.to_h
           }
 
-          action_definition.merge!(summary: operation.description) if operation.description.present?
+          param_documentation = operation
+                                  .params
+                                  .filter { |_, v| v[:description].present? }
+                                  .map { |name, param| "* `#{name}`<br />#{param[:description]}" }
+                                  .join("\n\n")
+
+          if param_documentation.present?
+            param_documentation = "**Parameters**\n#{param_documentation}"
+          end
+
+          if param_documentation.present? || operation.description.present?
+            action_definition.merge!(description: "#{operation.description}\n\n#{param_documentation}".strip)
+          end
 
           if body.any?
             body_type_name = Types::Namespace.with_namespace(
