@@ -63,7 +63,7 @@ class CustomT < AnnotationT
 
   def self.registered(type)
     raise TypeNotFound.new(type) unless registry.key? type
-    registry[type]
+    registry[type].is_a?(Proc) ? registry[type].call : registry[type]
   end
 
   def self.types
