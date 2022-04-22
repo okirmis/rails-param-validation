@@ -43,10 +43,11 @@ class OptionalT < AnnotationT
 end
 
 class CustomT < AnnotationT
-  attr_reader :type
+  attr_reader :type, :from
 
-  def initialize(type)
+  def initialize(type, from: :name)
     @type = type
+    @from = from
   end
 
   def schema
@@ -75,6 +76,8 @@ class CustomT < AnnotationT
     @@types ||= {}
   end
 end
+
+CustomType = CustomT
 end
 
 module Types
