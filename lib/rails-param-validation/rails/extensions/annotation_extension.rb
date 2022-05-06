@@ -38,7 +38,11 @@ module RailsParamValidation
     end
 
     module ClassMethods
-      def base_path(path)
+      def base_path(path, include_module_name: true)
+        if include_module_name
+          path = "#{module_parent_name.underscore}/#{path}".gsub("//", "/")
+        end
+
         @base_paths ||= {}
         @base_paths[self.name] = path
       end
