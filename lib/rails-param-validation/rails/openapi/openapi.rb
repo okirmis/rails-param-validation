@@ -31,7 +31,9 @@ module RailsParamValidation
       }
 
       @actions.each do |operation|
-        body = operation.params.filter { |_, v| v[:type] == :body }.map { |name, pd| [name, pd[:schema]] }.to_h
+        body = operation.params.filter do |_, v|
+          v[:type] == :body && !RailsParamValidation::ValidatorFactory.create(v[:schema]).to_openapi.nil?
+        end.map { |name, pd| [name, pd[:schema]] }.to_h
 
         parameters = operation.params.filter { |_, v| v[:type] != :body }.map do |name, pd|
           param_definition = { name: name, in: pd[:type] }
