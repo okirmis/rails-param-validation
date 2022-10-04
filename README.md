@@ -1,7 +1,5 @@
 # RailsParamValidation
 
-[![pipeline status](https://git.iftrue.de/okirmis/rails-param-validation/badges/master/pipeline.svg)](https://git.iftrue.de/okirmis/rails-param-validation/commits/master)
-
 This gem provides parameter validation for Rails using a declarative parameter definition and makes the automatic validation of complex parameters very easy. It also supports an export of the definition as an OpenAPI document.
 
 * [Why this gem?](./docs/main-idea.md)
