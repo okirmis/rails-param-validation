@@ -54,6 +54,16 @@ module RailsParamValidation
     end
 
     def add_response(status, schema, description)
+      if @responses.key?(status)
+        if @responses[status][:schema].is_a?(Array)
+          schema = @responses[status][:schema] + [schema];
+        else
+          schema = [@responses[status][:schema], schema]
+        end
+
+        description = @responses[status][:description] + "<br />&nbsp;<br />OR<br />&nbsp;<br />" + description
+      end
+
       @responses[status] = {
           schema: schema,
           description: description
