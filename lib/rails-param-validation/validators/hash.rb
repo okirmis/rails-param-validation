@@ -20,7 +20,7 @@ module RailsParamValidation
 
       # Verify each entry
       data.each do |key, entry|
-        match_key = @value_validator.matches?(path + ["#{key}[key]"], key)
+        match_key = @key_validator.matches?(path + ["#{key}[key]"], key)
         match_value = @value_validator.matches?(path + [key], entry)
 
         if match_value.matches? && match_key.matches?
