@@ -2,10 +2,10 @@ module RailsParamValidation
 
 class AlternativesValidator < Validator
     # @param [Array] schema
-    def initialize(schema)
-      super schema
+    def initialize(schema, collection)
+      super schema, collection
 
-      @inner_validators = schema.map { |value| ValidatorFactory.create(value) }
+      @inner_validators = schema.map { |value| ValidatorFactory.create(value, collection) }
     end
 
     def matches?(path, data)
@@ -34,8 +34,8 @@ class AlternativesValidator < Validator
       schema.is_a? Array
     end
 
-    def create(schema)
-      AlternativesValidator.new schema
+    def create(schema, collection)
+      AlternativesValidator.new schema, collection
     end
   end
 

@@ -1,8 +1,8 @@
 module RailsParamValidation
 
   class StringValidator < Validator
-    def initialize(schema)
-      super schema
+    def initialize(schema, collection)
+      super schema, collection
     end
 
     def matches?(path, data)
@@ -23,8 +23,8 @@ module RailsParamValidation
       schema == String || schema == Symbol
     end
 
-    def create(schema)
-      StringValidator.new schema
+    def create(schema, collection)
+      StringValidator.new schema, collection
     end
   end
 

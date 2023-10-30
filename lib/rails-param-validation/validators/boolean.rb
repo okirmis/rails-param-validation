@@ -1,8 +1,8 @@
 module RailsParamValidation
 
   class BooleanValidator < Validator
-    def initialize(schema)
-      super schema
+    def initialize(schema, collection)
+      super schema, collection
     end
 
     def matches?(path, data)
@@ -30,8 +30,8 @@ module RailsParamValidation
       schema == Boolean
     end
 
-    def create(schema)
-      BooleanValidator.new schema
+    def create(schema, collection)
+      BooleanValidator.new schema, collection
     end
   end
 

@@ -1,8 +1,8 @@
 module RailsParamValidation
 
   class IntegerValidator < Validator
-    def initialize(schema)
-      super schema
+    def initialize(schema, collection)
+      super schema, collection
     end
 
     def matches?(path, data)
@@ -31,8 +31,8 @@ module RailsParamValidation
       schema == Integer
     end
 
-    def create(schema)
-      IntegerValidator.new schema
+    def create(schema, collection)
+      IntegerValidator.new schema, collection
     end
   end
 

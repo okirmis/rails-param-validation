@@ -33,10 +33,11 @@ module RailsParamValidation
   end
 
   class Validator
-    attr_reader :schema
+    attr_reader :schema, :collection
 
-    def initialize(schema)
+    def initialize(schema, collection)
       @schema = schema
+      @collection = collection
     end
 
     # @return [MatchData]

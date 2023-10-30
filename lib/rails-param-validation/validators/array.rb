@@ -2,10 +2,10 @@ module RailsParamValidation
 
   class ArrayValidator < Validator
     # @param [ArrayT] schema
-    def initialize(schema)
-      super schema
+    def initialize(schema, collection)
+      super schema, collection
 
-      @inner_validator = ValidatorFactory.create schema.inner_type
+      @inner_validator = ValidatorFactory.create schema.inner_type, collection
     end
 
     def matches?(path, data)
@@ -41,8 +41,8 @@ module RailsParamValidation
       schema.is_a? AnnotationTypes::ArrayT
     end
 
-    def create(schema)
-      ArrayValidator.new schema
+    def create(schema, collection)
+      ArrayValidator.new schema, collection
     end
   end
 

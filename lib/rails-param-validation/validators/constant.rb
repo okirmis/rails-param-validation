@@ -3,8 +3,8 @@ module RailsParamValidation
   class ConstantValidator < Validator
     CLASS_MAP = { TrueClass => Boolean, FalseClass => Boolean }
 
-    def initialize(schema)
-      super schema
+    def initialize(schema, collection)
+      super schema, collection
 
       @constant = schema
     end
@@ -23,7 +23,7 @@ module RailsParamValidation
     end
 
     def to_openapi
-      ValidatorFactory.create(CLASS_MAP.fetch(schema.class, schema.class)).to_openapi.merge(enum: [schema])
+      ValidatorFactory.create(CLASS_MAP.fetch(schema.class, schema.class), collection).to_openapi.merge(enum: [schema])
     end
   end
 
@@ -32,8 +32,8 @@ module RailsParamValidation
       ![String, Symbol, Numeric, TrueClass, FalseClass].detect { |klass| schema.is_a? klass }.nil?
     end
 
-    def create(schema)
-      ConstantValidator.new schema
+    def create(schema, collection)
+      ConstantValidator.new schema, collection
     end
   end
 

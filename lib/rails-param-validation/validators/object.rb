@@ -2,10 +2,10 @@ module RailsParamValidation
 
   class ObjectValidator < Validator
     # @param [Hash] schema
-    def initialize(schema)
-      super schema
+    def initialize(schema, collection)
+      super schema, collection
 
-      @inner_validators = schema.map { |key, value| [key, ValidatorFactory.create(value)] }.to_h
+      @inner_validators = schema.map { |key, value| [key, ValidatorFactory.create(value, collection)] }.to_h
     end
 
     def matches?(path, data)
@@ -55,8 +55,8 @@ module RailsParamValidation
       schema.is_a? Hash
     end
 
-    def create(schema)
-      ObjectValidator.new schema
+    def create(schema, collection)
+      ObjectValidator.new schema, collection
     end
   end
 

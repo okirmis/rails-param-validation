@@ -2,11 +2,11 @@ module RailsParamValidation
 
   class HashValidator < Validator
     # @param [HashT] schema
-    def initialize(schema)
-      super schema
+    def initialize(schema, collection)
+      super schema, collection
 
-      @value_validator = ValidatorFactory.create schema.inner_type
-      @key_validator = ValidatorFactory.create schema.key_type
+      @value_validator = ValidatorFactory.create schema.inner_type, collection
+      @key_validator = ValidatorFactory.create schema.key_type, collection
     end
 
     def matches?(path, data)
@@ -44,8 +44,8 @@ module RailsParamValidation
       schema.is_a? AnnotationTypes::HashT
     end
 
-    def create(schema)
-      HashValidator.new schema
+    def create(schema, collection)
+      HashValidator.new schema, collection
     end
   end
 

@@ -1,3 +1,3 @@
 module RailsParamValidation
-  VERSION = "0.4.14"
+  VERSION = "0.5.0"
 end

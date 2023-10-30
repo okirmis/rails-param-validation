@@ -3,8 +3,8 @@ module RailsParamValidation
   class UuidValidator < Validator
     REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
 
-    def initialize(schema)
-      super schema
+    def initialize(schema, collection)
+      super schema, collection
     end
 
     def matches?(path, data)
@@ -31,8 +31,8 @@ module RailsParamValidation
       schema == Uuid
     end
 
-    def create(schema)
-      UuidValidator.new schema
+    def create(schema, collection)
+      UuidValidator.new schema, collection
     end
   end
 

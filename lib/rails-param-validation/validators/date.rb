@@ -1,8 +1,8 @@
 module RailsParamValidation
 
   class DateValidator < Validator
-    def initialize(schema)
-      super schema
+    def initialize(schema, collection)
+      super schema, collection
     end
 
     def matches?(path, data)
@@ -31,8 +31,8 @@ module RailsParamValidation
       schema == Date
     end
 
-    def create(schema)
-      DateValidator.new schema
+    def create(schema, collection)
+      DateValidator.new schema, collection
     end
   end
 

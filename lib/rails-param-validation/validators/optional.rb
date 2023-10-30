@@ -1,10 +1,10 @@
 module RailsParamValidation
 
   class OptionalValidator < Validator
-    def initialize(schema)
-      super schema
+    def initialize(schema, collection)
+      super schema, collection
 
-      @inner_validator = ValidatorFactory.create schema.inner_type
+      @inner_validator = ValidatorFactory.create schema.inner_type, collection
       @default         = schema.default
     end
 
@@ -36,8 +36,8 @@ module RailsParamValidation
       schema.is_a? AnnotationTypes::OptionalT
     end
 
-    def create(schema)
-      OptionalValidator.new schema
+    def create(schema, collection)
+      OptionalValidator.new schema, collection
     end
   end
 

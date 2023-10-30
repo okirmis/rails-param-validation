@@ -1,8 +1,8 @@
 module RailsParamValidation
 
   class RegexValidator < Validator
-    def initialize(schema)
-      super schema
+    def initialize(schema, collection)
+      super schema, collection
     end
 
     def matches?(path, data)
@@ -29,8 +29,8 @@ module RailsParamValidation
       schema.is_a? Regexp
     end
 
-    def create(schema)
-      RegexValidator.new schema
+    def create(schema, collection)
+      RegexValidator.new schema, collection
     end
   end
 
