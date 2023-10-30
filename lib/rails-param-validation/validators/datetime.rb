@@ -31,7 +31,7 @@ module RailsParamValidation
       schema == DateTime
     end
 
-    def create(schema)
+    def create(schema, collection)
       DateTimeValidator.new schema, collection
     end
   end
