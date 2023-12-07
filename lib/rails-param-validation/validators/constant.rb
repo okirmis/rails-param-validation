@@ -1,6 +1,8 @@
 module RailsParamValidation
 
   class ConstantValidator < Validator
+    attr_reader :constant
+
     CLASS_MAP = { TrueClass => Boolean, FalseClass => Boolean }
 
     def initialize(schema, collection)

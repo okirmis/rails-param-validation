@@ -3,6 +3,7 @@ module RailsParamValidation
   class ObjectValidator < Validator
     # @param [Hash] schema
     def initialize(schema, collection)
+      schema = schema.map { |k, v| [k.to_s, v] }.sort.to_h
       super schema, collection
 
       @inner_validators = schema.map { |key, value| [key, ValidatorFactory.create(value, collection)] }.to_h

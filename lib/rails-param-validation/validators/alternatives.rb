@@ -6,6 +6,9 @@ class AlternativesValidator < Validator
       super schema, collection
 
       @inner_validators = schema.map { |value| ValidatorFactory.create(value, collection) }
+      if @inner_validators.all? { |v| v.is_a?(ConstantValidator) }
+        @inner_validators.sort_by! { |v| v.constant.to_s }
+      end
     end
 
     def matches?(path, data)
