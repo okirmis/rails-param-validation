@@ -6,12 +6,12 @@ module RailsParamValidation
     end
 
     def matches?(path, data)
-      detected_value = @constants.any? { |c| c.to_s == data.to_s }
-      unless detected_value
+      detected_values = @constants.select { |c| c.to_s == data.to_s }
+      unless detected_values.any?
         return MatchResult.new(nil, path, "The value is not one of the allowed constants")
       end
 
-      MatchResult.new detected_value, path
+      MatchResult.new detected_values.first, path
     end
 
     def to_openapi
