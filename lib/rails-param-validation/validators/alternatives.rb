@@ -1,5 +1,13 @@
 module RailsParamValidation
 class AlternativesValidator < Validator
+    def self.use_automatic_enums=(enabled)
+      @automatic_enums = enabled
+    end
+
+    def self.automatic_enums?
+      @automatic_enums.nil? ? true : @automatic_enums
+    end
+
     # @param [Array] schema
     def initialize(schema, collection)
       schema = AlternativesValidator.simplify schema
@@ -7,32 +15,36 @@ class AlternativesValidator < Validator
 
       @inner_validators = []
 
-      previous_enum_values = nil
-      schema.each do |value|
-        validator = ValidatorFactory.create(value, collection)
-        if validator.is_a?(ConstantValidator)
-          if previous_enum_values.nil?
-            previous_enum_values = [value]
-          else
-            if validator.constant.class == previous_enum_values.first.class
-              previous_enum_values << value
-            else
-              @inner_validators << ConstantEnumValidator.new(previous_enum_values, collection)
+      if AlternativesValidator.automatic_enums?
+        previous_enum_values = nil
+        schema.each do |value|
+          validator = ValidatorFactory.create(value, collection)
+          if validator.is_a?(ConstantValidator)
+            if previous_enum_values.nil?
               previous_enum_values = [value]
+            else
+              if validator.constant.class == previous_enum_values.first.class
+                previous_enum_values << value
+              else
+                @inner_validators << ConstantEnumValidator.new(previous_enum_values, collection)
+                previous_enum_values = [value]
+              end
             end
+
+            next
           end
 
-          next
+          if previous_enum_values
+            @inner_validators << ConstantEnumValidator.new(previous_enum_values, collection)
+            previous_enum_values = nil
+          end
+          @inner_validators << validator
         end
 
-        if previous_enum_values
-          @inner_validators << ConstantEnumValidator.new(previous_enum_values, collection)
-          previous_enum_values = nil
-        end
-        @inner_validators << validator
+        @inner_validators << ConstantEnumValidator.new(previous_enum_values, collection) if previous_enum_values
+      else
+        @inner_validators = schema.map { |value| ValidatorFactory.create(value, collection) }
       end
-
-      @inner_validators << ConstantEnumValidator.new(previous_enum_values, collection) if previous_enum_values
     end
 
     def matches?(path, data)
