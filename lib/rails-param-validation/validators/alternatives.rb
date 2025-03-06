@@ -68,6 +68,10 @@ class AlternativesValidator < Validator
         return @inner_validators.first.to_openapi
       end
 
+      if @inner_validators.all? { |v| v.is_a?(ConstantValidator) } && @inner_validators.all? { |v| v.constant.class == @inner_validators.first.constant.class }
+        return { oneOf: @inner_validators.sort_by(&:constant).map(&:to_openapi) }
+      end
+
       { oneOf: @inner_validators.map(&:to_openapi) }
     end
 
